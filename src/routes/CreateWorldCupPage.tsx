@@ -25,7 +25,7 @@ export function CreateWorldCupPage() {
           최소 4개 항목부터 시작할 수 있고, 항목 수에 맞춰 4강, 8강, 16강, 32강을 선택할 수 있습니다.
         </p>
       </header>
-      {saveError ? <p className="rounded-lg bg-amber-50 px-4 py-3 text-sm font-bold text-amber-700">{saveError}</p> : null}
+      {saveError ? <p className="wc-status-amber rounded-lg px-4 py-3 text-sm font-bold">{saveError}</p> : null}
       <WorldCupForm onSubmit={handleSubmit} />
     </div>
   );

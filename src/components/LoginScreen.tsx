@@ -64,7 +64,7 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
             <input type="checkbox" checked={credentials.rememberMe} onChange={(event) => setCredentials((current) => ({ ...current, rememberMe: event.target.checked }))} />
             로그인 유지
           </label>
-          {error ? <p className="rounded-lg bg-rose-50 px-4 py-3 text-sm font-bold text-rose-700">{error}</p> : null}
+          {error ? <p className="wc-status-rose rounded-lg px-4 py-3 text-sm font-bold">{error}</p> : null}
           <button type="submit" className="coms-button-primary min-h-12 w-full" disabled={loading}>
             <LogIn size={16} /> {loading ? "로그인 중..." : "로그인"}
           </button>

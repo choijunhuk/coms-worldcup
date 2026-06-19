@@ -88,7 +88,9 @@ export function PlayWorldCupPage() {
             <h1 className="mt-2 break-words text-3xl font-black text-[var(--app-text)]">{template.title}</h1>
           </div>
           <div className="text-right">
-            <p className="text-sm font-black text-[var(--app-text)]">현재 매치 {progress.matchNumber} / {progress.matchTotal}</p>
+            <p className="text-sm font-black text-[var(--app-text)]">
+              현재 매치 {progress.matchNumber} / {progress.matchTotal}
+            </p>
             <p className="mt-1 text-xs font-bold text-[var(--app-subtle)]">A/← 왼쪽, D/→ 오른쪽</p>
           </div>
         </div>
@@ -96,8 +98,9 @@ export function PlayWorldCupPage() {
           <ProgressBar value={progress.percent} />
         </div>
       </section>
+
       {storageWarning ? (
-        <p className="rounded-lg bg-amber-50 px-4 py-3 text-sm font-bold text-amber-700">
+        <p className="wc-status-amber rounded-lg px-4 py-3 text-sm font-bold">
           {storageWarning}
           <button type="button" className="ml-2 underline" onClick={() => setStorageWarning("")}>
             닫기
@@ -108,7 +111,12 @@ export function PlayWorldCupPage() {
       <MatchView match={match} selectedId={selectedId} disabled={Boolean(selectedId)} onSelect={choose} />
 
       <div className="flex flex-wrap justify-between gap-3">
-        <button type="button" className="coms-button-ghost" onClick={() => setSession(undoLastChoice(session))} disabled={session.choices.length === 0 || Boolean(selectedId)}>
+        <button
+          type="button"
+          className="coms-button-ghost"
+          onClick={() => setSession(undoLastChoice(session))}
+          disabled={session.choices.length === 0 || Boolean(selectedId)}
+        >
           <RotateCcw size={16} /> 이전 선택 되돌리기
         </button>
         <button type="button" className="coms-button-ghost" onClick={() => navigate("/")}>

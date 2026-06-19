@@ -1,23 +1,83 @@
 @import "tailwindcss";
 
+/* ─── Light tokens ────────────────────────────────────────────── */
 :root {
   color-scheme: light;
   --apple-font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Apple SD Gothic Neo", "Segoe UI", "Malgun Gothic", sans-serif;
-  --app-bg: #f5f5f7;
-  --app-surface: #ffffff;
-  --app-surface-soft: #f5f5f7;
-  --app-text: #1d1d1f;
-  --app-muted: #6e6e73;
-  --app-subtle: #86868b;
-  --app-hairline: rgba(0, 0, 0, 0.1);
-  --app-accent: #0071e3;
-  --app-accent-hover: #0077ed;
-  --app-accent-soft: #e8f3ff;
-  --app-accent-text: #0066cc;
+
+  --app-bg:             #f5f5f7;
+  --app-surface:        #ffffff;
+  --app-surface-soft:   #f5f5f7;
+  --app-surface-elevated: #ffffff;
+  --app-text:           #1d1d1f;
+  --app-muted:          #6e6e73;
+  --app-subtle:         #86868b;
+  --app-hairline:       rgba(0, 0, 0, 0.1);
+  --app-hairline-strong: rgba(0, 0, 0, 0.16);
+
+  --app-accent:         #0071e3;
+  --app-accent-hover:   #0077ed;
+  --app-accent-soft:    #e8f3ff;
+  --app-accent-text:    #0066cc;
+
+  /* VS divider */
+  --wc-vs-bg:           var(--app-surface);
+  --wc-vs-text:         var(--app-muted);
+  --wc-vs-border:       var(--app-hairline);
+
+  /* Winner glow */
+  --wc-winner-gradient: radial-gradient(circle at 50% 35%, var(--app-accent-soft), #fff 58%, #f5f5f7);
+
+  /* Status colours – light */
+  --app-amber-bg:       #fffbeb;
+  --app-amber-text:     #92400e;
+  --app-green-bg:       #ecfdf5;
+  --app-green-text:     #065f46;
+  --app-rose-bg:        #fff1f2;
+  --app-rose-text:      #9f1239;
 }
 
+/* ─── Dark tokens ─────────────────────────────────────────────── */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --app-bg:             #0d0f14;
+  --app-surface:        #1a1c22;
+  --app-surface-soft:   #14161b;
+  --app-surface-elevated: #22252e;
+  --app-text:           #f0f0f5;
+  --app-muted:          #9898a0;
+  --app-subtle:         #68686f;
+  --app-hairline:       rgba(255, 255, 255, 0.09);
+  --app-hairline-strong: rgba(255, 255, 255, 0.15);
+
+  /* Cyan replaces blue as the playful tournament accent */
+  --app-accent:         #00c2d4;
+  --app-accent-hover:   #00d4e8;
+  --app-accent-soft:    rgba(0, 194, 212, 0.12);
+  --app-accent-text:    #3dd6e4;
+
+  /* VS divider — glassy dark */
+  --wc-vs-bg:           rgba(255, 255, 255, 0.05);
+  --wc-vs-text:         var(--app-text);
+  --wc-vs-border:       rgba(255, 255, 255, 0.14);
+
+  /* Winner — deep radial glow */
+  --wc-winner-gradient: radial-gradient(circle at 50% 35%, rgba(0, 194, 212, 0.18), rgba(142, 92, 247, 0.10) 42%, var(--app-surface) 72%);
+
+  /* Status colours – dark */
+  --app-amber-bg:       rgba(245, 158, 11, 0.14);
+  --app-amber-text:     #fbbf24;
+  --app-green-bg:       rgba(52, 199, 89, 0.12);
+  --app-green-text:     #34d058;
+  --app-rose-bg:        rgba(244, 63, 94, 0.13);
+  --app-rose-text:      #fb7185;
+}
+
+/* ─── Base ────────────────────────────────────────────────────── */
 html {
   background: var(--app-bg);
+  transition: background-color 220ms ease, color 220ms ease;
 }
 
 body {
@@ -31,6 +91,7 @@ body {
   -webkit-font-smoothing: antialiased;
   word-break: keep-all;
   overflow-wrap: break-word;
+  transition: background-color 220ms ease, color 220ms ease;
 }
 
 button,
@@ -56,6 +117,7 @@ select:focus-visible {
   outline-offset: 2px;
 }
 
+/* ─── Utility classes ─────────────────────────────────────────── */
 .apple-eyebrow {
   font-size: 0.76rem;
   font-weight: 900;
@@ -64,13 +126,21 @@ select:focus-visible {
   color: var(--app-accent-text);
 }
 
+/* ─── Cards & panels ─────────────────────────────────────────── */
 .coms-card {
   border: 1px solid var(--app-hairline);
-  border-radius: 8px;
+  border-radius: 12px;
   background: color-mix(in srgb, var(--app-surface) 92%, transparent);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: background-color 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
 }
 
+:root[data-theme="dark"] .coms-card {
+  background: color-mix(in srgb, var(--app-surface) 96%, transparent);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+/* ─── Buttons ────────────────────────────────────────────────── */
 .coms-button-primary,
 .coms-button-ghost,
 .coms-nav-link,
@@ -92,6 +162,11 @@ select:focus-visible {
   padding: 0.55rem 1rem;
   color: #ffffff;
   box-shadow: 0 10px 28px rgba(0, 113, 227, 0.18);
+}
+
+:root[data-theme="dark"] .coms-button-primary {
+  color: #0a0c10;
+  box-shadow: 0 6px 22px rgba(0, 194, 212, 0.28);
 }
 
 .coms-button-primary:hover {
@@ -118,6 +193,15 @@ select:focus-visible {
   background: var(--app-surface-soft);
 }
 
+:root[data-theme="dark"] .coms-button-ghost {
+  background: var(--app-surface-elevated);
+  border-color: var(--app-hairline-strong);
+}
+
+:root[data-theme="dark"] .coms-button-ghost:hover {
+  background: color-mix(in srgb, var(--app-surface-elevated) 80%, var(--app-hairline));
+}
+
 .coms-nav-link {
   min-height: 2.25rem;
   padding: 0.4rem 0.8rem;
@@ -130,6 +214,11 @@ select:focus-visible {
   color: var(--app-accent-text);
 }
 
+:root[data-theme="dark"] .coms-nav-link:hover,
+:root[data-theme="dark"] .coms-nav-link-active {
+  background: color-mix(in srgb, var(--app-accent) 14%, transparent);
+}
+
 .coms-icon-button {
   min-height: 2.75rem;
   min-width: 2.75rem;
@@ -138,6 +227,40 @@ select:focus-visible {
   color: var(--app-muted);
 }
 
+/* Theme toggle button */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 9999px;
+  border: 1px solid var(--app-hairline);
+  background: var(--app-surface);
+  color: var(--app-muted);
+  cursor: pointer;
+  transition: background 160ms ease, color 160ms ease, border-color 160ms ease, transform 160ms ease;
+}
+
+.theme-toggle:hover {
+  background: var(--app-surface-elevated);
+  color: var(--app-text);
+  border-color: var(--app-hairline-strong);
+  transform: scale(1.08);
+}
+
+:root[data-theme="dark"] .theme-toggle {
+  background: var(--app-surface-elevated);
+  border-color: var(--app-hairline-strong);
+}
+
+:root[data-theme="dark"] .theme-toggle:hover {
+  background: color-mix(in srgb, var(--app-accent) 14%, var(--app-surface-elevated));
+  color: var(--app-accent);
+  border-color: color-mix(in srgb, var(--app-accent) 36%, transparent);
+}
+
+/* ─── Inputs ─────────────────────────────────────────────────── */
 .coms-input {
   min-height: 2.75rem;
   width: 100%;
@@ -157,20 +280,90 @@ select:focus-visible {
   box-shadow: 0 0 0 4px color-mix(in srgb, var(--app-accent) 18%, transparent);
 }
 
+:root[data-theme="dark"] .coms-input {
+  background: var(--app-surface-soft);
+}
+
+/* ─── Match view / VS ────────────────────────────────────────── */
+.match-view {
+  position: relative;
+  left: 50%;
+  width: min(calc(100vw - 2rem), 88rem);
+  transform: translateX(-50%);
+}
+
+/* VS badge */
+.wc-vs-badge {
+  border-radius: 9999px;
+  border: 1px solid var(--wc-vs-border);
+  background: var(--wc-vs-bg);
+  padding: 0.45rem 1.1rem;
+  font-size: 0.9rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  color: var(--wc-vs-text);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: background 220ms ease, border-color 220ms ease, color 220ms ease;
+}
+
+:root[data-theme="dark"] .wc-vs-badge {
+  /* Cyan/violet split glow on the badge in dark mode */
+  box-shadow:
+    0 0 0 1px rgba(0, 194, 212, 0.18),
+    0 4px 18px rgba(0, 194, 212, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  text-shadow: 0 0 12px rgba(0, 194, 212, 0.5);
+}
+
+/* ─── WorldCup card ──────────────────────────────────────────── */
 .worldcup-card {
+  display: flex;
   min-height: 30rem;
+  width: 100%;
+  flex-direction: column;
   border: 1px solid var(--app-hairline);
-  border-radius: 8px;
+  border-radius: 12px;
   background: var(--app-surface);
   padding: 1rem;
   box-shadow: 0 16px 44px rgba(0, 0, 0, 0.08);
-  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background 220ms ease;
 }
 
-.worldcup-card:hover {
+:root[data-theme="dark"] .worldcup-card {
+  background: var(--app-surface);
+  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.44), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.match-view .worldcup-card {
+  min-height: clamp(32rem, 54vw, 40rem);
+  padding: clamp(1rem, 1.6vw, 1.35rem);
+}
+
+.worldcup-media {
+  flex-shrink: 0;
+}
+
+.worldcup-media > :is(img, iframe, div) {
+  transition: transform 240ms ease;
+}
+
+.worldcup-card:not(:disabled):is(:hover, :focus-visible) {
   border-color: color-mix(in srgb, var(--app-accent) 36%, transparent);
   box-shadow: 0 24px 70px rgba(0, 0, 0, 0.12);
-  transform: translateY(-2px);
+  transform: translateY(-3px) scale(1.025);
+}
+
+:root[data-theme="dark"] .worldcup-card:not(:disabled):is(:hover, :focus-visible) {
+  border-color: color-mix(in srgb, var(--app-accent) 54%, transparent);
+  box-shadow:
+    0 24px 70px rgba(0, 0, 0, 0.55),
+    0 0 0 1px color-mix(in srgb, var(--app-accent) 28%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.worldcup-card:not(:disabled):is(:hover, :focus-visible) .worldcup-media > :is(img, iframe, div) {
+  transform: scale(1.075);
 }
 
 .worldcup-card-selected {
@@ -179,6 +372,30 @@ select:focus-visible {
   transform: scale(0.985);
 }
 
+:root[data-theme="dark"] .worldcup-card-selected {
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--app-accent) 32%, transparent),
+    0 24px 70px rgba(0, 194, 212, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.worldcup-card-selected:is(:hover, :focus-visible) {
+  transform: scale(0.985);
+}
+
+/* Fallback avatar gradient — dark */
+:root[data-theme="dark"] .worldcup-card .worldcup-media .wc-avatar-fallback {
+  background: linear-gradient(135deg, rgba(0, 194, 212, 0.18), rgba(142, 92, 247, 0.14));
+  color: var(--app-accent-text);
+}
+
+/* Tags */
+:root[data-theme="dark"] .wc-tag {
+  background: color-mix(in srgb, var(--app-accent) 14%, var(--app-surface-elevated));
+  color: var(--app-accent-text);
+}
+
+/* ─── Bracket ────────────────────────────────────────────────── */
 .worldcup-bracket {
   display: grid;
   gap: 0.75rem;
@@ -195,6 +412,7 @@ select:focus-visible {
   color: var(--app-text);
   animation: bracketPulse 1800ms ease-in-out infinite;
   animation-delay: var(--delay);
+  transition: background-color 220ms ease, border-color 220ms ease;
 }
 
 .bracket-step::before {
@@ -205,12 +423,34 @@ select:focus-visible {
   background: var(--app-accent);
 }
 
+:root[data-theme="dark"] .bracket-step {
+  background: var(--app-surface-elevated);
+  border-color: var(--app-hairline-strong);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+:root[data-theme="dark"] .bracket-step::before {
+  /* Violet accent for brackets in dark mode */
+  background: linear-gradient(180deg, #8e5cf7, #00c2d4);
+}
+
+/* ─── Final glow ─────────────────────────────────────────────── */
 .final-glow {
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--app-accent) 28%, transparent), 0 28px 80px rgba(0, 113, 227, 0.14);
 }
 
+:root[data-theme="dark"] .final-glow {
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--app-accent) 36%, transparent),
+    0 0 40px rgba(0, 194, 212, 0.14),
+    0 28px 80px rgba(0, 0, 0, 0.5);
+}
+
+/* ─── Winner screen ──────────────────────────────────────────── */
 .winner-orbit {
   position: relative;
+  background: var(--wc-winner-gradient);
+  transition: background 220ms ease;
 }
 
 .winner-orbit::after {
@@ -222,6 +462,78 @@ select:focus-visible {
   animation: orbit 9s linear infinite;
 }
 
+:root[data-theme="dark"] .winner-orbit::after {
+  border-color: color-mix(in srgb, var(--app-accent) 28%, transparent);
+}
+
+/* ─── Status messages ────────────────────────────────────────── */
+.wc-status-amber {
+  background: var(--app-amber-bg);
+  color: var(--app-amber-text);
+}
+
+.wc-status-green {
+  background: var(--app-green-bg);
+  color: var(--app-green-text);
+}
+
+.wc-status-rose {
+  background: var(--app-rose-bg);
+  color: var(--app-rose-text);
+}
+
+/* ─── Header ─────────────────────────────────────────────────── */
+.wc-header {
+  background: color-mix(in srgb, var(--app-surface) 88%, transparent);
+  border-bottom: 1px solid var(--app-hairline);
+  backdrop-filter: saturate(180%) blur(22px);
+  -webkit-backdrop-filter: saturate(180%) blur(22px);
+  transition: background 220ms ease, border-color 220ms ease;
+}
+
+:root[data-theme="dark"] .wc-header {
+  background: color-mix(in srgb, var(--app-surface) 82%, transparent);
+  border-bottom-color: var(--app-hairline-strong);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+/* ─── Progress bar ───────────────────────────────────────────── */
+.wc-progress-track {
+  height: 0.5rem;
+  overflow: hidden;
+  border-radius: 9999px;
+  background: color-mix(in srgb, var(--app-text) 8%, transparent);
+  transition: background 220ms ease;
+}
+
+:root[data-theme="dark"] .wc-progress-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.wc-progress-fill {
+  height: 100%;
+  border-radius: 9999px;
+  background: var(--app-accent);
+  transition: width 300ms ease, background 220ms ease;
+}
+
+:root[data-theme="dark"] .wc-progress-fill {
+  background: linear-gradient(90deg, #00c2d4, #8e5cf7);
+  box-shadow: 0 0 8px rgba(0, 194, 212, 0.4);
+}
+
+/* ─── User badge ─────────────────────────────────────────────── */
+.wc-user-badge {
+  background: var(--app-accent-soft);
+  color: var(--app-accent-text);
+}
+
+:root[data-theme="dark"] .wc-user-badge {
+  background: color-mix(in srgb, var(--app-accent) 16%, var(--app-surface-elevated));
+  color: var(--app-accent-text);
+}
+
+/* ─── Animations ─────────────────────────────────────────────── */
 @keyframes bracketPulse {
   0%,
   100% {
@@ -238,6 +550,16 @@ select:focus-visible {
   }
 }
 
+@keyframes themeSwitch {
+  0%   { opacity: 0; transform: scale(0.8) rotate(-30deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+.theme-icon-enter {
+  animation: themeSwitch 200ms ease forwards;
+}
+
+/* ─── Reduced motion ─────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -246,6 +568,23 @@ select:focus-visible {
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* ─── Responsive ─────────────────────────────────────────────── */
+@media (min-width: 640px) {
+  .match-view {
+    width: min(calc(100vw - 3rem), 88rem);
+  }
+}
+
+@media (hover: none) {
+  .worldcup-card:not(:disabled):is(:hover, :focus-visible) {
+    transform: translateY(-1px);
+  }
+
+  .worldcup-card:not(:disabled):is(:hover, :focus-visible) .worldcup-media > :is(img, iframe, div) {
+    transform: none;
   }
 }
 
