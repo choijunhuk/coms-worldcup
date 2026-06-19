@@ -157,8 +157,18 @@ select:focus-visible {
   box-shadow: 0 0 0 4px color-mix(in srgb, var(--app-accent) 18%, transparent);
 }
 
+.match-view {
+  position: relative;
+  left: 50%;
+  width: min(calc(100vw - 2rem), 88rem);
+  transform: translateX(-50%);
+}
+
 .worldcup-card {
+  display: flex;
   min-height: 30rem;
+  width: 100%;
+  flex-direction: column;
   border: 1px solid var(--app-hairline);
   border-radius: 8px;
   background: var(--app-surface);
@@ -167,15 +177,36 @@ select:focus-visible {
   transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
 }
 
-.worldcup-card:hover {
+.match-view .worldcup-card {
+  min-height: clamp(32rem, 54vw, 40rem);
+  padding: clamp(1rem, 1.6vw, 1.35rem);
+}
+
+.worldcup-media {
+  flex-shrink: 0;
+}
+
+.worldcup-media > :is(img, iframe, div) {
+  transition: transform 240ms ease;
+}
+
+.worldcup-card:not(:disabled):is(:hover, :focus-visible) {
   border-color: color-mix(in srgb, var(--app-accent) 36%, transparent);
   box-shadow: 0 24px 70px rgba(0, 0, 0, 0.12);
-  transform: translateY(-2px);
+  transform: translateY(-3px) scale(1.025);
+}
+
+.worldcup-card:not(:disabled):is(:hover, :focus-visible) .worldcup-media > :is(img, iframe, div) {
+  transform: scale(1.075);
 }
 
 .worldcup-card-selected {
   border-color: var(--app-accent);
   box-shadow: 0 0 0 4px color-mix(in srgb, var(--app-accent) 18%, transparent), 0 24px 70px rgba(0, 113, 227, 0.18);
+  transform: scale(0.985);
+}
+
+.worldcup-card-selected:is(:hover, :focus-visible) {
   transform: scale(0.985);
 }
 
@@ -246,6 +277,22 @@ select:focus-visible {
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+@media (min-width: 640px) {
+  .match-view {
+    width: min(calc(100vw - 3rem), 88rem);
+  }
+}
+
+@media (hover: none) {
+  .worldcup-card:not(:disabled):is(:hover, :focus-visible) {
+    transform: translateY(-1px);
+  }
+
+  .worldcup-card:not(:disabled):is(:hover, :focus-visible) .worldcup-media > :is(img, iframe, div) {
+    transform: none;
   }
 }
 

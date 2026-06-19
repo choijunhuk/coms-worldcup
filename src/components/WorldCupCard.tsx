@@ -23,7 +23,7 @@ export function WorldCupCard({ item, side, selected = false, disabled = false, o
       onClick={() => onSelect?.(item.id)}
       aria-label={`${side === "left" ? "왼쪽" : side === "right" ? "오른쪽" : "항목"} 선택: ${item.name}`}
     >
-      <div className="aspect-[4/3] overflow-hidden rounded-lg bg-[var(--app-surface-soft)]">
+      <div className="worldcup-media aspect-[4/3] overflow-hidden rounded-lg bg-[var(--app-surface-soft)]">
         {media?.type === "youtube" ? (
           <iframe
             className="h-full w-full pointer-events-none"
@@ -34,7 +34,7 @@ export function WorldCupCard({ item, side, selected = false, disabled = false, o
           />
         ) : media && !imageFailed ? (
           <img
-            className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
+            className="h-full w-full object-cover"
             src={media.url}
             alt=""
             onError={() => setImageFailed(true)}
