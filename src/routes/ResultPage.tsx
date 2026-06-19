@@ -16,7 +16,14 @@ export function ResultPage() {
   const shareText = useMemo(() => (result ? createWorldCupShareText(result) : ""), [result]);
 
   if (!result) {
-    return <EmptyState title="결과를 찾을 수 없습니다" description="이 브라우저에 저장된 결과가 아니거나 삭제되었습니다." actionLabel="홈으로" actionTo="/" />;
+    return (
+      <EmptyState
+        title="결과를 찾을 수 없습니다"
+        description="이 브라우저에 저장된 결과가 아니거나 삭제되었습니다."
+        actionLabel="홈으로"
+        actionTo="/"
+      />
+    );
   }
 
   const copy = async (): Promise<void> => {
@@ -29,24 +36,38 @@ export function ResultPage() {
     } catch {
       const ok = await copyText(shareText);
       setCopied(ok);
-      setShareMessage(ok ? "서버 공유는 실패했지만 공유 텍스트를 복사했습니다. 로그인 상태를 확인해주세요." : "공유에 실패했습니다.");
+      setShareMessage(
+        ok
+          ? "서버 공유는 실패했지만 공유 텍스트를 복사했습니다. 로그인 상태를 확인해주세요."
+          : "공유에 실패했습니다.",
+      );
     }
   };
 
   return (
     <div className="space-y-6">
       <ResultCard result={result} shareText={shareText} onCopy={copy} />
+
       {routeState?.storageWarning ? (
-        <p className="rounded-lg bg-amber-50 px-4 py-3 text-sm font-bold text-amber-700">
+        <p className="wc-status-amber rounded-lg px-4 py-3 text-sm font-bold">
           브라우저 저장소에 결과를 저장하지 못했습니다. 이 결과는 새로고침하면 사라질 수 있습니다.
         </p>
       ) : null}
-      {copied || shareMessage ? <p className="rounded-lg bg-emerald-50 px-4 py-3 text-sm font-bold text-emerald-700">{shareMessage || "공유 텍스트를 복사했습니다."}</p> : null}
+
+      {copied || shareMessage ? (
+        <p className="wc-status-green rounded-lg px-4 py-3 text-sm font-bold">
+          {shareMessage || "공유 텍스트를 복사했습니다."}
+        </p>
+      ) : null}
+
       <section className="coms-card p-5">
         <h2 className="text-xl font-black text-[var(--app-text)]">내 선택 기록</h2>
         <div className="mt-4 grid gap-3">
           {result.choices.map((choice) => (
-            <div key={choice.matchId} className="rounded-lg bg-[var(--app-surface-soft)] px-4 py-3 text-sm leading-6">
+            <div
+              key={choice.matchId}
+              className="rounded-lg bg-[var(--app-surface-soft)] border border-[var(--app-hairline)] px-4 py-3 text-sm leading-6"
+            >
               <span className="font-black text-[var(--app-text)]">{choice.selectedName}</span>
               <span className="text-[var(--app-muted)]"> 이겼고 </span>
               <span className="font-semibold text-[var(--app-muted)]">{choice.rejectedName}</span>

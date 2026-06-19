@@ -151,7 +151,7 @@ export function WorldCupForm({ onSubmit }: WorldCupFormProps) {
             <Sparkles size={16} /> 샘플 항목 자동 추가
           </button>
         </div>
-        <p className={`md:col-span-2 rounded-lg px-4 py-3 text-sm font-bold ${canSubmit ? "bg-emerald-50 text-emerald-700" : "bg-[var(--app-accent-soft)] text-[var(--app-accent-text)]"}`}>
+        <p className={`md:col-span-2 rounded-lg px-4 py-3 text-sm font-bold ${canSubmit ? "wc-status-green" : "bg-[var(--app-accent-soft)] text-[var(--app-accent-text)]"}`}>
           {guidance}
         </p>
       </section>
@@ -164,7 +164,7 @@ export function WorldCupForm({ onSubmit }: WorldCupFormProps) {
           </button>
         </div>
         <div className="grid gap-3">
-          {uploadError ? <p className="rounded-lg bg-amber-50 px-4 py-3 text-sm font-bold text-amber-700">{uploadError}</p> : null}
+          {uploadError ? <p className="wc-status-amber rounded-lg px-4 py-3 text-sm font-bold">{uploadError}</p> : null}
           {items.map((item, index) => (
             <article key={item.id} className="coms-card grid gap-3 p-4 lg:grid-cols-[1fr_1.2fr_1fr_1fr_auto]">
               <input className="coms-input" value={item.name} onChange={(event) => updateItem(item.id, { name: event.target.value })} placeholder={`항목 ${index + 1} 이름`} />
