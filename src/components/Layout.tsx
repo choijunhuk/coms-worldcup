@@ -1,4 +1,4 @@
-import { Brackets, LogOut, Moon, Plus, Sun, Trophy } from "lucide-react";
+import { Brackets, LogOut, Moon, Plus, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import type { ReactNode } from "react";
@@ -18,6 +18,7 @@ export function Layout({ children }: LayoutProps) {
   const [authLoading, setAuthLoading] = useState(false);
   const { theme, toggle } = useTheme();
   const [iconKey, setIconKey] = useState(0);
+  const logoUrl = `${import.meta.env.BASE_URL}logo.png`;
 
   useEffect(() => {
     let mounted = true;
@@ -59,9 +60,7 @@ export function Layout({ children }: LayoutProps) {
         <header className="wc-header sticky top-0 z-40">
           <nav className="mx-auto flex h-14 max-w-7xl items-center gap-3 px-4 sm:px-6">
             <Link to="/" className="flex min-w-0 items-center gap-2 font-black">
-              <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-[var(--app-accent)] text-white">
-                <Trophy size={18} className="dark:text-[#0a0c10]" />
-              </span>
+              <img src={logoUrl} alt="" className="size-9 shrink-0 object-contain" draggable={false} />
               <span className="truncate text-[var(--app-text)]">COMS 월드컵</span>
             </Link>
             <div className="ml-auto flex items-center gap-2">
