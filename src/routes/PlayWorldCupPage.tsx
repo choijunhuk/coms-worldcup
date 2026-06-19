@@ -5,6 +5,7 @@ import { EmptyState } from "../components/EmptyState";
 import { MatchView } from "../components/MatchView";
 import { ProgressBar } from "../components/ProgressBar";
 import { findSampleWorldCup } from "../lib/sampleData";
+import { trySaveProfileDocument } from "../lib/miniApi";
 import { getStoredTemplates, saveResult } from "../lib/storage";
 import { createPlaySession, getActiveMatch, getCurrentProgress, recordChoice, undoLastChoice } from "../lib/worldcupEngine";
 import type { WorldCupPlaySession, WorldCupTemplate } from "../types/worldcup";
@@ -43,6 +44,7 @@ export function PlayWorldCupPage() {
         const next = recordChoice(session, itemId);
         if (next.result) {
           const saved = saveResult(next.result);
+          void trySaveProfileDocument("result", next.result);
           navigate(`/result/${next.result.id}`, { state: saved ? undefined : { result: next.result, storageWarning: true } });
           return;
         }

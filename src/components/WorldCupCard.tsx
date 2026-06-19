@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { mediaFromInput } from "../lib/media";
 import type { WorldCupItem } from "../types/worldcup";
 
 interface WorldCupCardProps {
@@ -12,6 +13,7 @@ interface WorldCupCardProps {
 export function WorldCupCard({ item, side, selected = false, disabled = false, onSelect }: WorldCupCardProps) {
   const [imageFailed, setImageFailed] = useState(false);
   const initial = item.name.trim().charAt(0) || "C";
+  const media = item.media ?? mediaFromInput(item.imageUrl);
 
   return (
     <button
@@ -22,10 +24,18 @@ export function WorldCupCard({ item, side, selected = false, disabled = false, o
       aria-label={`${side === "left" ? "왼쪽" : side === "right" ? "오른쪽" : "항목"} 선택: ${item.name}`}
     >
       <div className="aspect-[4/3] overflow-hidden rounded-lg bg-[var(--app-surface-soft)]">
-        {item.imageUrl && !imageFailed ? (
+        {media?.type === "youtube" ? (
+          <iframe
+            className="h-full w-full pointer-events-none"
+            src={media.embedUrl}
+            title={`${item.name} YouTube preview`}
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          />
+        ) : media && !imageFailed ? (
           <img
             className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
-            src={item.imageUrl}
+            src={media.url}
             alt=""
             onError={() => setImageFailed(true)}
           />

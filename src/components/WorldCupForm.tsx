@@ -1,5 +1,7 @@
 import { Plus, Sparkles, Trash2 } from "lucide-react";
 import { useMemo, useState } from "react";
+import { mediaFromInput } from "../lib/media";
+import { uploadMediaFile } from "../lib/miniApi";
 import { sampleWorldCupItems } from "../lib/sampleData";
 import { getMissingItemCount, getPlayableTargetSizes } from "../lib/worldcupEngine";
 import type { WorldCupCategory, WorldCupItem, WorldCupTargetSize, WorldCupTemplate } from "../types/worldcup";
@@ -35,6 +37,8 @@ export function WorldCupForm({ onSubmit }: WorldCupFormProps) {
   const [category, setCategory] = useState<WorldCupCategory>("language");
   const [targetSize, setTargetSize] = useState<WorldCupTargetSize>(8);
   const [items, setItems] = useState<WorldCupItem[]>([0, 1, 2, 3].map(createDraftItem));
+  const [uploadingId, setUploadingId] = useState<string | undefined>();
+  const [uploadError, setUploadError] = useState("");
 
   const validItems = items.filter((item) => item.name.trim().length > 0);
   const playableSizes = getPlayableTargetSizes(validItems.length);
@@ -53,6 +57,26 @@ export function WorldCupForm({ onSubmit }: WorldCupFormProps) {
 
   const updateItem = (id: string, patch: Partial<WorldCupItem>): void => {
     setItems((current) => current.map((item) => (item.id === id ? { ...item, ...patch } : item)));
+  };
+
+  const setMediaUrl = (id: string, value: string): void => {
+    updateItem(id, { imageUrl: value, media: mediaFromInput(value) });
+  };
+
+  const uploadItemMedia = async (item: WorldCupItem, file: File | undefined): Promise<void> => {
+    if (!file) {
+      return;
+    }
+    setUploadingId(item.id);
+    setUploadError("");
+    try {
+      const url = await uploadMediaFile(file, item.name || "월드컵 항목");
+      setMediaUrl(item.id, url);
+    } catch (error) {
+      setUploadError(error instanceof Error ? error.message : "미디어 업로드에 실패했습니다.");
+    } finally {
+      setUploadingId(undefined);
+    }
   };
 
   const addSampleItems = (): void => {
@@ -83,6 +107,7 @@ export function WorldCupForm({ onSubmit }: WorldCupFormProps) {
         name: item.name.trim(),
         description: item.description.trim() || "설명이 아직 없습니다.",
         imageUrl: item.imageUrl?.trim() || undefined,
+        media: item.media ?? mediaFromInput(item.imageUrl),
         tags: item.tags,
       })),
       createdAt: now,
@@ -139,11 +164,18 @@ export function WorldCupForm({ onSubmit }: WorldCupFormProps) {
           </button>
         </div>
         <div className="grid gap-3">
+          {uploadError ? <p className="rounded-lg bg-amber-50 px-4 py-3 text-sm font-bold text-amber-700">{uploadError}</p> : null}
           {items.map((item, index) => (
             <article key={item.id} className="coms-card grid gap-3 p-4 lg:grid-cols-[1fr_1.2fr_1fr_1fr_auto]">
               <input className="coms-input" value={item.name} onChange={(event) => updateItem(item.id, { name: event.target.value })} placeholder={`항목 ${index + 1} 이름`} />
               <input className="coms-input" value={item.description} onChange={(event) => updateItem(item.id, { description: event.target.value })} placeholder="짧은 설명" />
-              <input className="coms-input" value={item.imageUrl ?? ""} onChange={(event) => updateItem(item.id, { imageUrl: event.target.value })} placeholder="이미지 URL (선택)" />
+              <div className="grid gap-2">
+                <input className="coms-input" value={item.imageUrl ?? ""} onChange={(event) => setMediaUrl(item.id, event.target.value)} placeholder="이미지/GIF/YouTube URL" />
+                <label className="inline-flex min-h-10 cursor-pointer items-center justify-center rounded-lg border border-[var(--app-hairline)] bg-[var(--app-surface)] px-3 text-xs font-black text-[var(--app-muted)] transition hover:bg-[var(--app-surface-soft)]">
+                  {uploadingId === item.id ? "업로드 중..." : "파일 업로드"}
+                  <input className="sr-only" type="file" accept="image/*,.gif" onChange={(event) => void uploadItemMedia(item, event.target.files?.[0])} />
+                </label>
+              </div>
               <input
                 className="coms-input"
                 value={item.tags.join(", ")}

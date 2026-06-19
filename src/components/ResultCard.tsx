@@ -1,5 +1,6 @@
 import { RotateCcw, Share2, Trophy } from "lucide-react";
 import { Link } from "react-router-dom";
+import { mediaFromInput } from "../lib/media";
 import type { WorldCupResult } from "../types/worldcup";
 
 interface ResultCardProps {
@@ -9,12 +10,19 @@ interface ResultCardProps {
 }
 
 export function ResultCard({ result, shareText, onCopy }: ResultCardProps) {
+  const winnerMedia = result.winner.media ?? mediaFromInput(result.winner.imageUrl);
+
   return (
     <section className="coms-card overflow-hidden">
       <div className="grid gap-8 p-6 md:grid-cols-[0.9fr_1.1fr] md:p-8">
         <div className="winner-orbit grid aspect-square place-items-center rounded-lg bg-[radial-gradient(circle_at_50%_35%,var(--app-accent-soft),#fff_58%,#f5f5f7)]">
           <div className="text-center">
             <Trophy className="mx-auto text-[var(--app-accent)]" size={58} strokeWidth={1.7} />
+            {winnerMedia?.type === "youtube" ? (
+              <iframe className="mx-auto mt-4 aspect-video w-full max-w-sm rounded-lg" src={winnerMedia.embedUrl} title={`${result.winner.name} YouTube preview`} loading="lazy" />
+            ) : winnerMedia ? (
+              <img className="mx-auto mt-4 aspect-video w-full max-w-sm rounded-lg object-cover" src={winnerMedia.url} alt="" />
+            ) : null}
             <p className="mt-4 text-sm font-black text-[var(--app-accent-text)]">최종 우승</p>
             <h1 className="mt-2 break-words text-4xl font-black leading-tight text-[var(--app-text)] sm:text-5xl">{result.winner.name}</h1>
           </div>

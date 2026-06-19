@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { WorldCupForm } from "../components/WorldCupForm";
+import { trySaveProfileDocument } from "../lib/miniApi";
 import { saveTemplate } from "../lib/storage";
 import type { WorldCupTemplate } from "../types/worldcup";
 
@@ -10,6 +11,7 @@ export function CreateWorldCupPage() {
 
   const handleSubmit = (template: WorldCupTemplate): void => {
     const saved = saveTemplate(template);
+    void trySaveProfileDocument("template", template);
     setSaveError(saved ? "" : "브라우저 저장소에 저장하지 못했습니다. 지금 만든 월드컵은 이 화면 흐름에서만 이어집니다.");
     navigate(`/play/${template.id}`, { state: saved ? undefined : { template, storageWarning: true } });
   };
